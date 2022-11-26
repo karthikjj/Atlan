@@ -80,6 +80,13 @@ public class BaseClass {
         waitTillVisible();
     }
 
+    public void createNewWorkSheet(){
+        WebElement newWorkSheet = findElement(Constants.newWorkSheet,Locators.Xpath.getValue());
+        moveToTheElement(newWorkSheet);
+        newWorkSheet.click();
+        waitTillVisible();
+    }
+
     public void clickDashboards(){
         WebElement dashboards = findElement(Constants.dashBoards,Locators.Xpath.getValue());
         moveToTheElement(dashboards);
@@ -205,6 +212,8 @@ public class BaseClass {
                 .until(driver -> ((JavascriptExecutor) driver)
                         .executeScript("return document.readyState").equals("complete"));
     }
+
+
 
 
 }
