@@ -7,10 +7,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeSuite;
+import org.testng.Assert;
+import org.testng.annotations.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -27,7 +25,7 @@ public class BaseClass {
     public Actions actions = null;
     Faker faker = new Faker();
 
-    protected String dateAndTime = null;
+    protected String dateAndTime = "";
 
 
     public BaseClass(){
@@ -40,22 +38,6 @@ public class BaseClass {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Constants.timeOuts));
         System.out.println("Before CLass Ran");
-    }
-
-    @BeforeClass
-    public void login(){
-        driver.get(Constants.url);
-        enterUserName(Constants.getUserName);
-        enterPassword(Constants.getPassWord);
-        clickSignIn();
-        waitTillVisible(findElement(Constants.workSheets,Locators.Xpath.getValue()));
-    }
-
-    @AfterClass
-    public void closeDriver(){
-        driver.close();
-        System.out.println("After CLass Ran");
-
     }
 
     @AfterSuite
@@ -101,7 +83,9 @@ public class BaseClass {
     public void clickDashboards(){
         WebElement dashboards = findElement(Constants.dashBoards,Locators.Xpath.getValue());
         moveToTheElement(dashboards);
-        dashboards.click();
+        if(dashboards.isDisplayed()){
+            actionClick(dashboards);
+        }
         waitTillVisible();
     }
 
@@ -254,11 +238,12 @@ public class BaseClass {
         moveToTheElement(dashboard);
         dashboard.click();
         waitTillVisible();
+        dateAndTime = getCurrentDateAndTime();
         return dashboardName;
     }
 
     public boolean renameAndVerifyWorkSheetOrDashboard(String renameValue, String input){
-        if(input.isBlank() || input.isEmpty()){
+        if(input.isBlank() || input.isEmpty() || input != null || input.equals("")){
             input = dateAndTime;
         }
         boolean flag = false;
@@ -279,6 +264,46 @@ public class BaseClass {
         return flag;
     }
 
+    public boolean deleteDashboard(String input){
+        boolean flag = false;
+        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardName(input),Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+
+        element = findElement(Constants.deleteDashboard,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+
+        element = findElement(Constants.deleteDashboard,Locators.Xpath.getValue());
+        if(element.isDisplayed()){
+            moveToTheElement(element);
+            element.click();
+            flag = true;
+        }
+        return flag;
+    }
+
+
+    public boolean deleteWorksheet(String input) {
+        boolean flag = false;
+        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardName(input),Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+
+        element = findElement(Constants.deleteWorkSheet,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+
+        element = findElement(Constants.deleteWorkSheet,Locators.Xpath.getValue());
+        if(element.isDisplayed()){
+            moveToTheElement(element);
+            element.click();
+            flag = true;
+        }
+        return flag;
+    }
+
+
     public void searchAndSelectWorkSheetInDocumentsModal(String input){
         WebElement element = findElement(Constants.enterValuesInSearchAllDocuments,Locators.Xpath.getValue());
         moveToTheElement(element);
@@ -291,7 +316,7 @@ public class BaseClass {
     }
 
     public String getCurrentDateAndTime(){
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd h");
         LocalDateTime now = LocalDateTime.now();
         String value = dateTimeFormatter.format(now).toLowerCase();
         return value;
@@ -315,6 +340,35 @@ public class BaseClass {
         }
     }
 
+    public boolean verifyDashBoardIsCreated(String input) {
+        WebElement element = findElement(Constants.isDashboardPresent(input), Locators.Xpath.getValue());
+        moveToTheElement(element);
+        boolean result =  element.isDisplayed();
+        Assert.assertTrue(result,"Dashboard -"+input+ " is created");
+        return result;
+    }
+
+    public boolean verifyWorkSheetIsCreated(String input) {
+        WebElement element = findElement(Constants.isWorkSheetPresent(input), Locators.Xpath.getValue());
+        moveToTheElement(element);
+        boolean result =  element.isDisplayed();
+        Assert.assertTrue(result,"Worksheet -"+input+ " is created");
+        return result;
+    }
+    public void selectWorkSheet(String input) {
+        WebElement element = findElement(Constants.isWorkSheetPresent(input), Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+        waitTillVisible();
+    }
+
+    public void selectDashboard(String input) {
+        WebElement element = findElement(Constants.isDashboardPresent(input), Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+        waitTillVisible();
+    }
+
     public void selectSchema(String input) {
         WebElement element = findElement(Constants.searchSchemaSelector, Locators.Xpath.getValue());
         moveToTheElement(element);
@@ -325,9 +379,13 @@ public class BaseClass {
             element.click();
             element.sendKeys(input);
         }
+        element = findElement(Constants.getDatabaseAndSchemaOption(input.toUpperCase()),Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
     }
 
-    public void clickDashBoardOrDashboardName(String input){
+    public void clickWorksheetOrDashboardName(String input){
         WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardName(input),Locators.Xpath.getValue());
         moveToTheElement(element);
         element.click();
@@ -337,15 +395,22 @@ public class BaseClass {
     public void enterQuery(String input){
         WebElement element = findElement(Constants.sqlTextArea,Locators.Xpath.getValue());
         moveToTheElement(element);
-        element.click();
+        actionClick(element);
         element.sendKeys(input);
         waitTillVisible();
     }
 
-    public void clickRun( ){
+    public void clickRunInWorkSheet( ){
         WebElement element = findElement(Constants.runQueryInWorkSheet,Locators.Xpath.getValue());
         moveToTheElement(element);
-        element.click();
+        actionClick(element);
+        waitTillVisible();
+    }
+
+    public void clickRunInDashboard( ){
+        WebElement element = findElement(Constants.runQueryInDashboard,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
         waitTillVisible();
     }
 
@@ -409,19 +474,16 @@ public class BaseClass {
         waitTillVisible();
     }
 
-    public void deleteWorksheet() {
-        WebElement element = findElement(Constants.deleteWorkSheet, Locators.Xpath.getValue());
-        moveToTheElement(element);
-        element.click();
+    public void clickHomePage() {
+        WebElement element = findElement(Constants.goToHomePage, Locators.Xpath.getValue());
+        if(element.isDisplayed()){
+            moveToTheElement(element);
+            element.click();
+        }
         waitTillVisible();
     }
 
-    public void deleteDashboard() {
-        WebElement element = findElement(Constants.deleteDashboard, Locators.Xpath.getValue());
-        moveToTheElement(element);
-        element.click();
-        waitTillVisible();
-    }
+
 
 
 }

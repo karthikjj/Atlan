@@ -6,13 +6,13 @@ public class Constants {
 
     }
 
-    protected static final long timeOuts = 120;
+    protected static final long timeOuts = 30;
 
-    protected static final String url = "https://eq38788.ap-southeast-1.snowflakecomputing.com/console/login#/\n";
+    public static final String url = "https://eq38788.ap-southeast-1.snowflakecomputing.com/console/login#/\n";
 
-    protected static final String getUserName = "SADIKJJ";
+    public static final String getUserName = "SADIKJJ";
 
-    protected static final String getPassWord = "Test123@";
+    public static final String getPassWord = "Test123@";
 
     protected static final String userName = "//input[@name='username']";
 
@@ -20,9 +20,9 @@ public class Constants {
 
     protected static final String signIn = "//div[@role='button'][contains(.,'Sign in')]";
 
-    protected static final String workSheets = "//div//a[contains(.,'Worksheets')]";
+    protected static final String workSheets = "//div//a[contains(@href,'worksheets')]";
 
-    protected static final String dashBoards = "//div//a[contains(.,'Dashboards')]";
+    protected static final String dashBoards = "//div//a[contains(@href,'dashboard')]";
 
     protected static final String newWorkSheet = "//span[contains(.,'Worksheet')]//parent::div[@role='button'][@data-testid='new-button']";
 
@@ -59,9 +59,9 @@ public class Constants {
 
     protected static final String renameDashboardOrWorkSheet = "//div/input[contains(@aria-label,'Rename')]";
 
-    protected static final String deleteWorkSheet = "//div[@role='menuitem'][contains(.,'Delete Worksheet')]";
+    protected static final String deleteWorkSheet = "//div[@role='menuitem'][contains(.,'Delete Worksheet')] | //div[@role='button'][contains(.,'Delete')]";
 
-    protected static final String deleteDashboard = "//div[@role='menuitem'][contains(.,'Delete Dashboard')]";
+    protected static final String deleteDashboard = "//div[@role='menuitem'][contains(.,'Delete Dashboard')] | //div[@role='button'][contains(.,'Delete Dashboard')]";
 
     protected static final String duplicateDashboard = "//div[@role='menuitem'][contains(.,'Duplicate')]";
 
@@ -99,6 +99,8 @@ public class Constants {
 
     protected static final String runQueryInWorkSheet = "//div[@role='button'][contains(@aria-label,'Run')]";
 
+    protected static final String runQueryInDashboard = "//div[@role='dialog']//div[@role='button'][contains(@aria-label,'Run')]";
+
     protected static final String SearchAllDocumentsInDashBoard = "//input[@placeholder='Search all documents']";
 
     protected static final String getDatabaseAndSchemaOption(String value) {
@@ -113,6 +115,13 @@ public class Constants {
 
         return "//div[@role='button']/span[contains(.,'"+value+"')]";
     }
+
+    protected static final String isDashboardPresent(String value) {
+
+        return "//div[@role='row'][contains(.,'"+value+"')]";
+    }
+
+
 
     protected static final String isWorkSheetPresent(String value) {
 
