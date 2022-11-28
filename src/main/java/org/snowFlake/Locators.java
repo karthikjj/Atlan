@@ -12,7 +12,7 @@ public enum Locators {
 
     private String value;
 
-    public String getValue() {
+    protected String getValue() {
         return value;
     }
 

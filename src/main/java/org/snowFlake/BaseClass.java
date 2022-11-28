@@ -2,22 +2,21 @@ package org.snowFlake;
 
 
 import com.github.javafaker.Faker;
-import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.Duration;
-import java.time.LocalDate;
-import java.util.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class BaseClass {
 
@@ -26,6 +25,8 @@ public class BaseClass {
     public WebDriverWait wait = null;
     public Actions actions = null;
     Faker faker = new Faker();
+
+    protected String dateAndTime = null;
 
 
     public BaseClass(){
@@ -195,12 +196,12 @@ public class BaseClass {
         return randomString;
     }
 
-    public String firstName(){
-        return faker.name().firstName();
+    public String getWorkSheetName(){
+        return faker.name().firstName() +"-ws";
     }
 
-    public String lastName(){
-        return faker.name().lastName();
+    public String getDashboardName(){
+        return faker.name().lastName() +"-db";
     }
 
     public String phone(){
@@ -213,8 +214,210 @@ public class BaseClass {
                         .executeScript("return document.readyState").equals("complete"));
     }
 
+    public void clickNewDashboards(){
+        WebElement dashboards = findElement(Constants.newWorkSheet,Locators.Xpath.getValue());
+        moveToTheElement(dashboards);
+        dashboards.click();
+        waitTillVisible();
+    }
 
+    public String clickNewWorksheet(){
+        WebElement workSheet = findElement(Constants.newWorkSheet,Locators.Xpath.getValue());
+        moveToTheElement(workSheet);
+        workSheet.click();
+        waitTillVisible();
+        dateAndTime = getCurrentDateAndTime();
+        return dateAndTime;
+    }
+
+    public String createNewDashboard(){
+        WebElement dashboard = findElement(Constants.newDashboard,Locators.Xpath.getValue());
+        moveToTheElement(dashboard);
+        dashboard.click();
+        waitTillVisible();
+        dashboard = findElement(Constants.newDashboardName,Locators.Xpath.getValue());
+        moveToTheElement(dashboard);
+        dashboard.click();
+        String dashboardName = getDashboardName();
+        dashboard.sendKeys(dashboardName);
+        dashboard = findElement(Constants.createDashboardButton,Locators.Xpath.getValue());
+        moveToTheElement(dashboard);
+        dashboard.click();
+        waitTillVisible();
+        return dashboardName;
+    }
+
+    public boolean renameAndVerifyWorkSheetOrDashboard(String renameValue, String input){
+        if(input.isBlank() || input.isEmpty()){
+            input = dateAndTime;
+        }
+        boolean flag = false;
+        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardName(input),Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+
+        element = findElement(Constants.renameDashboardOrWorkSheet,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        element.clear();
+        element.sendKeys(renameValue);
+        element.sendKeys(Keys.TAB);
+        element = findElement(Constants.selectDefaultWorksheetOrDashboardName(renameValue),Locators.Xpath.getValue());
+        if(element.isDisplayed()){
+            flag = true;
+        }
+        return flag;
+    }
+
+    public void searchAndSelectWorkSheetInDocumentsModal(String input){
+        WebElement element = findElement(Constants.enterValuesInSearchAllDocuments,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        element.sendKeys(input);
+        element = findElement(Constants.selectDocumentInSearch(input),Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+        waitTillVisible();
+    }
+
+    public String getCurrentDateAndTime(){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH");
+        LocalDateTime now = LocalDateTime.now();
+        String value = dateTimeFormatter.format(now).toLowerCase();
+        return value;
+    }
+
+    public void selectDatabase(String input){
+        WebElement element = findElement(Constants.databaseAndSchemaSelector,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+
+        if(!input.isEmpty() || !input.isBlank()){
+            element = findElement(Constants.searchDatabaseSelector,Locators.Xpath.getValue());
+            moveToTheElement(element);
+            element.click();
+            element.sendKeys(input);
+        }
+        else {
+            element = findElement(Constants.defaultDatabaseOption,Locators.Xpath.getValue());
+            moveToTheElement(element);
+            element.click();
+        }
+    }
+
+    public void selectSchema(String input) {
+        WebElement element = findElement(Constants.searchSchemaSelector, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        if(!input.isEmpty() || !input.isBlank()){
+            element = findElement(Constants.searchSchemaSelector,Locators.Xpath.getValue());
+            moveToTheElement(element);
+            element.click();
+            element.sendKeys(input);
+        }
+    }
+
+    public void clickDashBoardOrDashboardName(String input){
+        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardName(input),Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void enterQuery(String input){
+        WebElement element = findElement(Constants.sqlTextArea,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        element.sendKeys(input);
+        waitTillVisible();
+    }
+
+    public void clickRun( ){
+        WebElement element = findElement(Constants.runQueryInWorkSheet,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void selectShareandDone( ){
+        WebElement element = findElement(Constants.shareWorkSheet,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+        element = findElement(Constants.done,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void goToRecent() {
+        WebElement element = findElement(Constants.navRecent, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void goToSharedWithMe() {
+        WebElement element = findElement(Constants.navSharedWithMe, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void goToMyWorkSheets() {
+        WebElement element = findElement(Constants.navMyWorkSheets, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void goToFolders() {
+        WebElement element = findElement(Constants.navFolders, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void goToMyDashboard() {
+        WebElement element = findElement(Constants.navMyDashboards, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void clickAddToTile() {
+        WebElement element = findElement(Constants.newTile, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void clickReturnTo() {
+        WebElement element = findElement(Constants.retrunTo, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void deleteWorksheet() {
+        WebElement element = findElement(Constants.deleteWorkSheet, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
+
+    public void deleteDashboard() {
+        WebElement element = findElement(Constants.deleteDashboard, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        element.click();
+        waitTillVisible();
+    }
 
 
 }
+
+
+
+
+
 
