@@ -10,6 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeSuite;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -33,12 +34,21 @@ public class BaseClass {
 
     }
 
-    @BeforeClass
+    @BeforeSuite
     public void initBrowser(){
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Constants.timeOuts));
         System.out.println("Before CLass Ran");
+    }
+
+    @BeforeClass
+    public void login(){
+        driver.get(Constants.url);
+        enterUserName(Constants.getUserName);
+        enterPassword(Constants.getPassWord);
+        clickSignIn();
+        waitTillVisible(findElement(Constants.workSheets,Locators.Xpath.getValue()));
     }
 
     @AfterClass
