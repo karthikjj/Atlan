@@ -9,9 +9,11 @@ public class TestSnowflake extends BaseClass {
     String workSheetName;
     String dashboardName;
 
+    String newFolderName;
 
-    @Test(priority = 0)
-    public void login(){
+
+    @Test(priority = 0,enabled = true)
+    public void loginSnowflake(){
         driver.get(Constants.url);
         enterUserName(Constants.getUserName);
         enterPassword(Constants.getPassWord);
@@ -19,8 +21,7 @@ public class TestSnowflake extends BaseClass {
         waitTillVisible();
     }
 
-
-    @Test(priority = 1)
+    @Test(priority = 1,enabled = true)
     public void TestCreateNewWorkSheet(){
         clickWorkSheets();
         String defaultWorkSheetName = clickNewWorksheet();
@@ -28,8 +29,7 @@ public class TestSnowflake extends BaseClass {
         renameAndVerifyWorkSheetOrDashboard(workSheetName,defaultWorkSheetName);
         selectDatabase("");
         selectSchema("CORE");
-        clickWorksheetOrDashboardName(workSheetName);
-        clickWorksheetOrDashboardName(workSheetName);
+        escapeFromSchemaPopUp(workSheetName);
         enterQuery("Select * From ");
         clickRunInWorkSheet();
 
@@ -41,7 +41,7 @@ public class TestSnowflake extends BaseClass {
         deleteWorksheet(workSheetName);
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2,enabled = true)
     public void TestCreateNewDashboard(){
         clickHomePage();
         clickDashboards();
@@ -51,9 +51,7 @@ public class TestSnowflake extends BaseClass {
         renameAndVerifyWorkSheetOrDashboard(workSheetName_1,dateAndTime);
         selectDatabase("");
         selectSchema("CORE");
-
-        clickWorksheetOrDashboardName(workSheetName_1);
-        clickWorksheetOrDashboardName(workSheetName_1);
+        escapeFromSchemaPopUp(workSheetName_1);
         enterQuery("Select * From ");
         clickRunInDashboard();
 
@@ -64,8 +62,31 @@ public class TestSnowflake extends BaseClass {
         clickDashboards();
         selectDashboard(dashboardName);
         deleteDashboard(dashboardName);
-
     }
+
+    @Test(priority = 3,enabled = true)
+    public void TestCreateNewFolderInWorkSheet(){
+        clickWorkSheets();
+        clickOptionsInWorkSheet();
+        clickNewFolder();
+        newFolderName = createNewFolder();
+        waitTillVisible();
+        String defaultWorkSheetName = clickNewWorksheet();
+        workSheetName = getWorkSheetName();
+        renameAndVerifyWorkSheetOrDashboard(workSheetName,defaultWorkSheetName);
+        selectDatabase("");
+        selectSchema("CORE");
+        escapeFromSchemaPopUp(workSheetName);
+        enterQuery("Select * From ");
+        clickRunInWorkSheet();
+
+        clickHomePage();
+        verifyFolderCreatedInWorkSheet(newFolderName);
+        selectFolder(newFolderName);
+        verifyWorkSheetIsCreated(workSheetName);
+        deleteFolder(newFolderName);
+    }
+
 
 
 

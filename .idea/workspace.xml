@@ -4,14 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="00c95693-2fb0-4c84-8a14-d11de97c8628" name="Changes" comment="Second Commit">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/TestSnowflake.java" afterDir="false" />
+    <list default="true" id="00c95693-2fb0-4c84-8a14-d11de97c8628" name="Changes" comment="3rd Commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/snowFlake/BaseClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/snowFlake/BaseClass.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/snowFlake/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/snowFlake/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestWorksheet.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/TestSnowflake.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestSnowflake.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -60,23 +57,35 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestWorksheet" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="TestSnowflake.TestCreateNewDashboard" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="AtlanAssignment" />
       <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestWorksheet" />
-      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="MAIN_CLASS_NAME" value="TestSnowflake" />
+      <option name="METHOD_NAME" value="TestCreateNewDashboard" />
+      <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestWorksheet.TestCreateNewDashboard (2)" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="TestSnowflake.TestCreateNewFolderInWorkSheet" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="AtlanAssignment" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="TestSnowflake" />
+      <option name="METHOD_NAME" value="TestCreateNewFolderInWorkSheet" />
+      <option name="TEST_OBJECT" value="METHOD" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="TestWorksheet" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="AtlanAssignment" />
       <option name="PACKAGE_NAME" value="" />
       <option name="MAIN_CLASS_NAME" value="TestWorksheet" />
-      <option name="METHOD_NAME" value="TestCreateNewDashboard" />
-      <option name="TEST_OBJECT" value="METHOD" />
+      <option name="TEST_OBJECT" value="CLASS" />
       <properties />
       <listeners />
       <method v="2">
@@ -95,25 +104,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestWorksheet.TestCreateNewWorkSheet" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="AtlanAssignment" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="MAIN_CLASS_NAME" value="TestWorksheet" />
-      <option name="METHOD_NAME" value="TestCreateNewWorkSheet" />
-      <option name="TEST_OBJECT" value="METHOD" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="TestNG.TestSnowflake" />
+        <item itemvalue="TestNG.TestSnowflake.TestCreateNewFolderInWorkSheet" />
+        <item itemvalue="TestNG.TestSnowflake.TestCreateNewDashboard" />
         <item itemvalue="TestNG.TestWorksheet.TestCreateNewDashboard" />
         <item itemvalue="TestNG.TestWorksheet" />
-        <item itemvalue="TestNG.TestWorksheet.TestCreateNewDashboard (2)" />
-        <item itemvalue="TestNG.TestWorksheet.TestCreateNewWorkSheet" />
       </list>
     </recent_temporary>
   </component>
@@ -154,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669626353449</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="3rd Commit">
+      <created>1669668485504</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1669668485514</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -171,7 +175,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First comit" />
     <MESSAGE value="Second Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Second Commit" />
+    <MESSAGE value="3rd Commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="3rd Commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -188,7 +193,7 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/TestSnowflake.java</url>
-          <line>53</line>
+          <line>52</line>
           <option name="timeStamp" value="5" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
@@ -198,17 +203,17 @@
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/org/snowFlake/BaseClass.java</url>
-          <line>245</line>
+          <line>250</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/TestSnowflake.java</url>
-          <line>58</line>
+          <line>56</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/TestSnowflake.java</url>
-          <line>62</line>
+          <line>60</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -218,8 +223,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/TestSnowflake.java</url>
-          <line>63</line>
+          <line>61</line>
           <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/TestSnowflake.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/TestSnowflake.java</url>
+          <line>73</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/test/java/TestSnowflake.java</url>
+          <line>83</line>
+          <option name="timeStamp" value="29" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

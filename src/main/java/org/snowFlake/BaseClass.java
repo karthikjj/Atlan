@@ -198,6 +198,10 @@ public class BaseClass {
         return faker.name().lastName() +"-db";
     }
 
+    public String getFolderName(){
+        return faker.name().lastName() +"_folder";
+    }
+
     public String phone(){
         return faker.phoneNumber().cellPhone();
     }
@@ -216,9 +220,10 @@ public class BaseClass {
     }
 
     public String clickNewWorksheet(){
+        waitTillVisible();
         WebElement workSheet = findElement(Constants.newWorkSheet,Locators.Xpath.getValue());
         moveToTheElement(workSheet);
-        workSheet.click();
+        actionClick(workSheet);
         waitTillVisible();
         dateAndTime = getCurrentDateAndTime();
         return dateAndTime;
@@ -247,7 +252,7 @@ public class BaseClass {
             input = dateAndTime;
         }
         boolean flag = false;
-        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardName(input),Locators.Xpath.getValue());
+        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardOrFolderName(input),Locators.Xpath.getValue());
         moveToTheElement(element);
         element.click();
 
@@ -257,7 +262,7 @@ public class BaseClass {
         element.clear();
         element.sendKeys(renameValue);
         element.sendKeys(Keys.TAB);
-        element = findElement(Constants.selectDefaultWorksheetOrDashboardName(renameValue),Locators.Xpath.getValue());
+        element = findElement(Constants.selectDefaultWorksheetOrDashboardOrFolderName(renameValue),Locators.Xpath.getValue());
         if(element.isDisplayed()){
             flag = true;
         }
@@ -266,7 +271,7 @@ public class BaseClass {
 
     public boolean deleteDashboard(String input){
         boolean flag = false;
-        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardName(input),Locators.Xpath.getValue());
+        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardOrFolderName(input),Locators.Xpath.getValue());
         moveToTheElement(element);
         element.click();
 
@@ -282,11 +287,10 @@ public class BaseClass {
         }
         return flag;
     }
-
 
     public boolean deleteWorksheet(String input) {
         boolean flag = false;
-        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardName(input),Locators.Xpath.getValue());
+        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardOrFolderName(input),Locators.Xpath.getValue());
         moveToTheElement(element);
         element.click();
 
@@ -303,6 +307,24 @@ public class BaseClass {
         return flag;
     }
 
+    public boolean deleteFolder(String input) {
+        boolean flag = false;
+        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardOrFolderName(input),Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+
+        element = findElement(Constants.deleteFolder,Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+
+        element = findElement(Constants.deleteFolder,Locators.Xpath.getValue());
+        if(element.isDisplayed()){
+            moveToTheElement(element);
+            actionClick(element);
+            flag = true;
+        }
+        return flag;
+    }
 
     public void searchAndSelectWorkSheetInDocumentsModal(String input){
         WebElement element = findElement(Constants.enterValuesInSearchAllDocuments,Locators.Xpath.getValue());
@@ -313,6 +335,46 @@ public class BaseClass {
         moveToTheElement(element);
         actionClick(element);
         waitTillVisible();
+    }
+
+    public void clickOptionsInWorkSheet() {
+        WebElement element = findElement(Constants.optionsForWorksheets, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+        waitTillVisible();
+    }
+    public void clickOptionsInDashboard() {
+        WebElement element = findElement(Constants.optionsForDashboard, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+        waitTillVisible();
+    }
+
+    public void clickNewFolder() {
+        WebElement element = findElement(Constants.newFolder, Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+        waitTillVisible();
+    }
+
+    public void clickFolderName(String input) {
+        WebElement element = findElement(Constants.isFolderPresent(input), Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+        waitTillVisible();
+    }
+
+    public String createNewFolder() {
+        WebElement folderName = findElement(Constants.newFolderName,Locators.Xpath.getValue());
+        moveToTheElement(folderName);
+        actionClick(folderName);
+        String newFolderName = getFolderName();
+        folderName.sendKeys(newFolderName);
+        folderName = findElement(Constants.createFolderButton,Locators.Xpath.getValue());
+        moveToTheElement(folderName);
+        actionClick(folderName);
+        waitTillVisible();
+        return newFolderName;
     }
 
     public String getCurrentDateAndTime(){
@@ -355,8 +417,24 @@ public class BaseClass {
         Assert.assertTrue(result,"Worksheet -"+input+ " is created");
         return result;
     }
+    public boolean verifyFolderCreatedInWorkSheet(String input) {
+        int count = findElements(Constants.isWorkSheetPresent(input), Locators.Xpath.getValue()).size();
+        WebElement element = findElements(Constants.isWorkSheetPresent(input), Locators.Xpath.getValue()).get(count-1);
+        moveToTheElement(element);
+        boolean result =  element.isDisplayed();
+        Assert.assertTrue(result,"Folder -"+input+ " is created");
+        return result;
+    }
     public void selectWorkSheet(String input) {
         WebElement element = findElement(Constants.isWorkSheetPresent(input), Locators.Xpath.getValue());
+        moveToTheElement(element);
+        actionClick(element);
+        waitTillVisible();
+    }
+
+    public void selectFolder(String input) {
+        int count = findElements(Constants.isWorkSheetPresent(input), Locators.Xpath.getValue()).size();
+        WebElement element = findElements(Constants.isWorkSheetPresent(input), Locators.Xpath.getValue()).get(count-1);
         moveToTheElement(element);
         actionClick(element);
         waitTillVisible();
@@ -385,8 +463,13 @@ public class BaseClass {
         waitTillVisible();
     }
 
+    public void escapeFromSchemaPopUp(String input){
+        clickWorksheetOrDashboardName(input);
+        clickWorksheetOrDashboardName(input);
+    }
+
     public void clickWorksheetOrDashboardName(String input){
-        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardName(input),Locators.Xpath.getValue());
+        WebElement element = findElement(Constants.selectDefaultWorksheetOrDashboardOrFolderName(input),Locators.Xpath.getValue());
         moveToTheElement(element);
         element.click();
         waitTillVisible();
@@ -478,7 +561,7 @@ public class BaseClass {
         WebElement element = findElement(Constants.goToHomePage, Locators.Xpath.getValue());
         if(element.isDisplayed()){
             moveToTheElement(element);
-            element.click();
+            actionClick(element);
         }
         waitTillVisible();
     }

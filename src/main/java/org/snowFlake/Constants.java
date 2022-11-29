@@ -63,6 +63,8 @@ public class Constants {
 
     protected static final String deleteDashboard = "//div[@role='menuitem'][contains(.,'Delete Dashboard')] | //div[@role='button'][contains(.,'Delete Dashboard')]";
 
+    protected static final String deleteFolder = "//div[@role='menuitem'][contains(.,'Delete Folder')] | //div[@role='button'][contains(.,'Delete Folder')]";
+
     protected static final String duplicateDashboard = "//div[@role='menuitem'][contains(.,'Duplicate')]";
 
     protected static final String importSQL = "//div[@role='menuitem'][contains(.,'Import SQL from File')]";
@@ -111,9 +113,9 @@ public class Constants {
 
         return "//a[@role='option'][contains(.,'"+value+"')]";
     }
-    protected static final String selectDefaultWorksheetOrDashboardName(String value) {
+    protected static final String selectDefaultWorksheetOrDashboardOrFolderName(String value) {
 
-        return "//div[@role='button']/span[contains(.,'"+value+"')]";
+        return "//div[@role='button']/span[contains(.,'"+value+"')] | //div[@role='button']//h1/span[contains(.,'"+value+"')]";
     }
 
     protected static final String isDashboardPresent(String value) {
@@ -121,7 +123,10 @@ public class Constants {
         return "//div[@role='row'][contains(.,'"+value+"')]";
     }
 
+    protected static final String isFolderPresent(String value) {
 
+        return "//a[@role='link'][contains(.,'"+value+"')]";
+    }
 
     protected static final String isWorkSheetPresent(String value) {
 
@@ -136,7 +141,11 @@ public class Constants {
 
     protected static final String newDashboardName = "//input[@placeholder='Dashboard name']";
 
+    protected static final String newFolderName = "//input[@placeholder='Folder name']";
+
     protected static final String createDashboardButton = "//div[@role='button'][text()='Create Dashboard']";
+
+    protected static final String createFolderButton = "//div[@role='button'][text()='Create Folder']";
 
     protected static final String cancelButton = "//div[@role='button'][text()='Cancel']";
 
